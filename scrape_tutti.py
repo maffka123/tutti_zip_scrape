@@ -1,5 +1,5 @@
 '''
-Tutt.ch does not provide functionality to sort your search based on ZIP of the ad, that can be important for heavy things.
+Tutti.ch does not provide functionality to sort your search based on ZIP of the ad, that can be important for heavy things.
 This simple script searches through tutti given your parameters + ZIP, and returns links of interesting ad, can be with description
 '''
 
@@ -12,8 +12,9 @@ import argparse
 import re
 import logging
 from tabulate import tabulate
-import datetime
+from datetime import datetime
 import math
+import sys
 
 
 def main(zip,city=None,price_min=None, price_max=None,searching_for=None):
@@ -67,9 +68,9 @@ def main(zip,city=None,price_min=None, price_max=None,searching_for=None):
 
     dateTimeObj = datetime.now()
     timestampStr = dateTimeObj.strftime("%Y%m%d-%H-%M")
-    final_links.to_csv('your_search_'+timestampStr)
-
     #Print the results
+    final_links = final_links.applymap(lambda x: str(x).ljust(11))
+    final_links.columns = final_links.columns.map(lambda x: str(x).ljust(11))
     print('YOUR SEARCH')
     print(tabulate(final_links, headers='keys', tablefmt='psql'))
 
@@ -152,5 +153,11 @@ if __name__ == "__main__":
     parser.add_argument("--searching_for", default=None, help="one word")
     args = parser.parse_args()
 
-    #main(args.zip,args.city,args.price_min,args.price_max,args.searching_for)
-    main('80*',city='zuerich',price_max='3',searching_for='tisch')
+
+    if args.zip==None:
+        sys.exit('!!!PLEASE, PROVIDE YOUR ZIP!!!')
+
+
+    main(args.zip,args.city,args.price_min,args.price_max,args.searching_for)
+
+    #main('80*',city='zuerich',price_max='3',searching_for='tisch') #uncomment in develop
