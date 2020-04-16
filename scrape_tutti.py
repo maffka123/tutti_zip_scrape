@@ -74,8 +74,6 @@ def main(zip,city=None,price_min=None, price_max=None,searching_for=None):
     print('YOUR SEARCH')
     print(tabulate(final_links, headers='keys', tablefmt='psql'))
 
-
-
 def get_page_content(url):
     '''
     Load the page into memory
@@ -107,14 +105,12 @@ def get_all_pages(soup, zip, link_base):
     pages_num = math.ceil(pages_num/30) #There are 30 ads per page
     for i in range(2,pages_num):
         sleep(0.7)
-        pattern_to_replace = '?' if i==2 else '?o='
-        next_page_link= link_base.replace(pattern_to_replace,'?o='+str(i)+'&')
+        next_page_link= link_base.replace('?','?o='+str(i)+'&')
         logging.info('The new search link was created: ' + next_page_link)
         soup = get_page_content(next_page_link)
         final_links = get_ads(soup, zip, final_links)
 
     return(final_links)
-
 
 def get_ads(soup,zip_set, final_links):
     '''
@@ -155,9 +151,7 @@ if __name__ == "__main__":
 
 
     if args.zip==None:
+        main('8057|8037|8051|8050', city='zuerich', price_max='5', searching_for='stuhl')  # uncomment in develop
         sys.exit('!!!PLEASE, PROVIDE YOUR ZIP!!!')
-
-
-    main(args.zip,args.city,args.price_min,args.price_max,args.searching_for)
-
-    #main('80*',city='zuerich',price_max='3',searching_for='tisch') #uncomment in develop
+    else:
+        main(args.zip, args.city, args.price_min, args.price_max, args.searching_for)
