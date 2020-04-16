@@ -27,7 +27,15 @@ chmod +x ./scrape_tutti.py
 ./scrape_tutti.py --zip=your_zip --city=your_city --price_min=min_price --price_max=max_price --searching_for=what_do_you_want
 ```
 
-All options except zip are optional
+All options except zip are optional:
+
+- zip can be in form 8056, 805*, 80* or 805., 80. etc.
+
+- city should have umlauts if there are some, or ue, ae, oe
+
+- prices just a number
+
+-searching for one word for now, it is enough for me :)
 
 ### 2. How does it work
 
