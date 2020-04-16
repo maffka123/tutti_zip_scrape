@@ -37,6 +37,15 @@ All options except zip are optional:
 
 - searching for one word for now, it is enough for me :)
 
+* Example:
+
+```bash
+python scrape_tutti.py --zip=80. --city=zuerich  --price_max=3 --searching_for=tisch
+```
+
+Will save .csv file and print the table:
+
+
 ### 2. How does it work
 
 Every search in tutti.ch is defined in the link, I insert all search options into the link and use bs4 to get the result, then parse the page to find needed zips.
