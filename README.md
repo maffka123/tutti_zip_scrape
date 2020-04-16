@@ -35,7 +35,7 @@ All options except zip are optional:
 
 - prices just a number
 
--searching for one word for now, it is enough for me :)
+- searching for one word for now, it is enough for me :)
 
 ### 2. How does it work
 
