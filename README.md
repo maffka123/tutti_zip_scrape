@@ -1,6 +1,6 @@
-## Filter tutti.ch search results by ZIP code
+## Filter tutti.ch search results by ZIP code (Suchergebnisse von tutti.ch nach Postleitzahl filtern)
 
-Unfortunately tutt.ch does not have ability to filter search results based on the ZIP. It can be however important if you are searching for something heavy and don't have a car (like me).
+Unfortunately tutti.ch does not have ability to filter search results based on the ZIP. It can be however important if you are searching for something heavy and don't have a car (like me).
 
 So I have wrote a simple script that scrapes tutti.ch
 
