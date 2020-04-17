@@ -22,8 +22,6 @@ def index():
 
         form=check_form(session, request)
         logging.info('Search arameters were: '+ str(form))
-        if 'kanton' in session:
-            form['kanton'] = session['kanton']
 
         select = request.form.get('Los')
         if select is not None:
@@ -59,6 +57,9 @@ def check_form(session, request):
     'price_max': None,
     'searching_for': None,
     'kanton':'Ganze-Schweiz'}
+
+    if 'kanton' in session:
+        form['kanton'] = session['kanton']
 
     for f in ['kanton','zip','price_min','price_max','searching_for']:
         select = request.form.get(f)
