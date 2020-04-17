@@ -30,7 +30,7 @@ python scrape_tutti.py --zip=your_zip --city=your_city --price_min=min_price --p
 
 All options except zip are optional:
 
-- zip can be in form 8056, 805*, 80* or 805., 80. etc.
+- zip can be in form 8056, 805*, 80* or 805., 80. etc. and any re should work, e.g. 8057|8051|8037
 
 - city should have umlauts if there are some, or ue, ae, oe
 
@@ -49,7 +49,8 @@ Will save .csv file and print the table:
 ### 3. Flask app serving
 
 ```bash
-export FLASK_APP=scrape_tutti_inro.py 
+export FLASK_APP=scrape_tutti_inro.py
+export FLASK_DEBUG=1 #optional
 flask run
 ```
 
