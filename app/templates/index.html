@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tutti_scraped</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+<div class="w3-container w3-teal w3-topbar">
+<div class="w3-container w3-cell"> <!-----------Kanton---->
+    <form method="post" enctype=multipart/form-data>
+    <div class="w3-dropdown-hover w3-white w3-border" ><h1>{{ kanton_list[0] }}</h1>
+          <div class="w3-dropdown-content w3-bar-block w3-border">
+
+               {% for item in kanton_list[1:] %} <!---List available  kantons -->
+               <button style="display: inline-block;" class="w3-bar-item w3-button h1_hover" id="kanton_list" name="kanton_list" value="{{ item }}" type="submit">{{ item }}</button>
+                {% endfor %}
+          </div>
+    </div>
+    </form>
+</div>
+
+<form method="post" enctype=multipart/form-data class="w3-container w3-cell"> <!----All other settings-->
+<div class="w3-container">
+    <div class="w3-container w3-cell"> <!-----zip---->
+            <input class="w3-input w3-border" type="text" placeholder="postleitzahl" id="zip" name="zip">
+    </div>
+
+    <div class="w3-container w3-cell"> <!-----price_min---->
+
+                <input class="w3-input w3-border" type="text" placeholder="Min Price" id="price_min" name="price_min">
+
+    </div>
+
+    <div class="w3-container w3-cell"> <!-----price_max---->
+
+                <input class="w3-input w3-border" type="text" placeholder="Max Price" id="price_max" name="price_max">
+
+    </div>
+
+</div>
+    <div class="w3-container">
+        <div class="w3-container w3-cell"><!-----searching_for---->
+
+                <input class="w3-input w3-border" type="text" placeholder="Ich suche..." id="searching_for" name="searching_for">
+
+    </div>
+        <div class="w3-container w3-cell">
+            <button style="display: inline-block;" class="w3-bar-item w3-button h1_hover w3-red" id="Los" name="Los" type="submit">Los</button>
+        </div>
+
+    </div>
+
+</form><!----End of All other settings-->
+</div>
+
+
+
+{% for ad in final_ads %}
+ <div>{{ ad | safe }}</div>
+{% endfor %}
+
+</body>
+</html>

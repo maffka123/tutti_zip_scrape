@@ -15,13 +15,18 @@ from tabulate import tabulate
 from datetime import datetime
 import math
 import sys
+from selenium import webdriver
+
+#option = webdriver.ChromeOptions()
+#option.add_argument(' — incognito')
+#driver = webdriver.Chrome(chrome_options=option)
 
 
-def main(zip,city=None,price_min=None, price_max=None,searching_for=None):
+def main(zip,kanton=None,price_min=None, price_max=None,searching_for=None, in_app=False):
     '''
     Start point
     :param zip: your zip, mandatory
-    :param city: your city, optional
+    :param kanton: your kanton, optional
     :param price_min: optional
     :param price_max: optional
     :param searching_for: optional
@@ -34,9 +39,9 @@ def main(zip,city=None,price_min=None, price_max=None,searching_for=None):
 
     ##--------Creating search link
     link_base='https://www.tutti.ch/de/li/'
-    if city!=None:
-        city=city.translate(str.maketrans({'ü': 'ue', 'ä': 'ae','ö':'oe'})).lower() #remove umlauts and big letters
-        link_base+=city+'?'
+    if kanton!=None:
+        kanton=kanton.translate(str.maketrans({'ü': 'ue', 'ä': 'ae','ö':'oe'})).lower() #remove umlauts and big letters
+        link_base+=kanton+'?'
     else:
         link_base+='ganze-schweiz?'
     if price_max!=None:
@@ -62,17 +67,20 @@ def main(zip,city=None,price_min=None, price_max=None,searching_for=None):
     soup = get_page_content(link_base)
 
     # get only interesting ads over all pages
-    final_links = get_all_pages(soup, zip, link_base)
+    final_links, final_ads = get_all_pages(soup, zip, link_base)
 
     #Save the results
 
     dateTimeObj = datetime.now()
     timestampStr = dateTimeObj.strftime("%Y%m%d-%H-%M")
-    #Print the results
-    final_links = final_links.applymap(lambda x: str(x).ljust(11))
-    final_links.columns = final_links.columns.map(lambda x: str(x).ljust(11))
-    print('YOUR SEARCH')
-    print(tabulate(final_links, headers='keys', tablefmt='psql'))
+    final_links.to_csv(f'your_search_{timestampStr}.csv')
+
+    #Print or return the results
+    if in_app:
+        return(final_ads)
+    else:
+        print('YOUR SEARCH')
+        print(tabulate(final_links, headers='keys', tablefmt='psql'))
 
 def get_page_content(url):
     '''
@@ -81,6 +89,7 @@ def get_page_content(url):
     :return: json with page
     '''
     pathpp = Path(url)
+    #driver.get(pathpp)
     if not pathpp.is_file():
         page = requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
@@ -99,7 +108,9 @@ def get_all_pages(soup, zip, link_base):
     '''
 
     final_links = pd.DataFrame(columns=['link', 'description', 'price'])
-    final_links = get_ads(soup, zip, final_links)
+    final_ads = []
+
+    final_links, final_ads = get_ads(soup, zip, final_links, final_ads)
     pages_num= soup.find('div',{'class':'_3N3mg'}).get_text()
     pages_num = int(''.join(re.findall('[0-9]', pages_num)))
     pages_num = math.ceil(pages_num/30) #There are 30 ads per page
@@ -108,11 +119,11 @@ def get_all_pages(soup, zip, link_base):
         next_page_link= link_base.replace('?','?o='+str(i)+'&')
         logging.info('The new search link was created: ' + next_page_link)
         soup = get_page_content(next_page_link)
-        final_links = get_ads(soup, zip, final_links)
+        final_links, final_ads = get_ads(soup, zip, final_links, final_ads)
 
-    return(final_links)
+    return(final_links, final_ads)
 
-def get_ads(soup,zip_set, final_links):
+def get_ads(soup,zip_set, final_links, final_ads):
     '''
     Parses the html and gets out ads with particular zip
     :param soup:
@@ -134,24 +145,27 @@ def get_ads(soup,zip_set, final_links):
             content2=ad.find('p',{'class':'_2c4Jo'}).get_text()
             price=ad.find('div',{'class':'_6HJe5'}).get_text()
             final_links = final_links.append({'link':link, 'description':content1+'\n'+content2, 'price':price}, ignore_index=True)
+            ad=str(ad).replace('href="/de/vi','target="_blank" href="https://www.tutti.ch/de/vi')
+            final_ads.append(ad)
             logging.info('Fadded: ' + content1)
 
-    return final_links
+    return (final_links, final_ads)
+
 
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='A tutorial of argparse!')
     parser.add_argument("--zip", help="add your zip, can be not full: 805*/805.")
-    parser.add_argument("--city", default=None, help="Please write city with umlauts or ue, ae, oe")
-    parser.add_argument("--price_min", default=None, help="Please write city with umlauts or ue, ae, oe")
-    parser.add_argument("--price_max", default=None, help="Please write city with umlauts or ue, ae, oe")
+    parser.add_argument("--kanton", default=None, help="Please write kanton with umlauts or ue, ae, oe")
+    parser.add_argument("--price_min", default=None, help="just a number")
+    parser.add_argument("--price_max", default=None, help="just a number")
     parser.add_argument("--searching_for", default=None, help="one word")
     args = parser.parse_args()
 
 
     if args.zip==None:
-        main('8057|8037|8051|8050', city='zuerich', price_max='5', searching_for='stuhl')  # uncomment in develop
+        main('8057|8037|8051|8050', kanton='zuerich', price_max='5', searching_for='stuhl')  # uncomment in develop
         sys.exit('!!!PLEASE, PROVIDE YOUR ZIP!!!')
     else:
-        main(args.zip, args.city, args.price_min, args.price_max, args.searching_for)
+        main(args.zip, args.kanton, args.price_min, args.price_max, args.searching_for)
