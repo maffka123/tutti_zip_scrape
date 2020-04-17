@@ -32,13 +32,19 @@
     </div>
 
     <div class="w3-container w3-cell"> <!-----price_min---->
-
+        {% if price_min %}
             <input class="w3-input w3-border" type="text" placeholder="Min Price" id="price_min" name="price_min" value="{{ price_min }}">
+        {% else %}
+            <input class="w3-input w3-border" type="text" placeholder="Min Price" id="price_min" name="price_min">
+        {% endif %}
     </div>
 
     <div class="w3-container w3-cell"> <!-----price_max---->
-
+        {% if price_max %}
                 <input class="w3-input w3-border" type="text" placeholder="Max Price" id="price_max" name="price_max" value="{{ price_max }}">
+         {% else %}
+        <input class="w3-input w3-border" type="text" placeholder="Max Price" id="price_max" name="price_max">
+         {% endif %}
     </div>
 
 </div>
