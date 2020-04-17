@@ -17,7 +17,6 @@ def index():
         Ticino, Vaud, Liechtenstein, Wallis, Neuenburg, Genf, Jura'
     kanton_list = kanton_list.split(', ')
     final_ads=[]
-    form={'zip':[],'price_min':[],'price_max':[]}
 
 
     if request.method == 'POST':
@@ -31,6 +30,14 @@ def index():
                 final_ads=scrape_tutti.main(form['zip'], kanton=form['kanton'], price_min=form['price_min'],
                                         price_max=form['price_max'], searching_for=form['searching_for'], in_app=True)
 
+                return render_template('index.html',
+                                       final_ads=final_ads,
+                                       kanton_list=kanton_list,
+                                       zip=form['zip'],
+                                       price_min=form['price_min'],
+                                       price_max=form['price_max'],
+                                       )
+
             except:
                 logging.error("Fatal error in main loop", exc_info=True)
 
@@ -41,9 +48,6 @@ def index():
     return render_template('index.html',
                            final_ads = final_ads,
                            kanton_list=kanton_list,
-                           zip=form['zip'],
-                           price_min=form['price_min'],
-                           price_max = form['price_max'],
                            )
 
 
