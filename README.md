@@ -15,7 +15,7 @@ in command line type:
 (for details: https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
 ```bash
-python3.7 -m venv v
+python3.6 -m venv v
 source v/bin/activate
 pip install -r requirements.txt
 ```
