@@ -5,3 +5,4 @@ v/
 your_search*
 ghostdriver.log
 tutti.pem
+*__pycache__
