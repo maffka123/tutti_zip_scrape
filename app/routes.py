@@ -22,7 +22,7 @@ def index():
     if request.method == 'POST':
 
         form=check_form(session, request)
-        logging.info('Search arameters were: '+ form)
+        logging.info('Search arameters were: '+ str(form))
 
         select = request.form.get('Los')
         if select is not None:
