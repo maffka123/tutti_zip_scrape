@@ -17,10 +17,16 @@ def index():
         Ticino, Vaud, Liechtenstein, Wallis, Neuenburg, Genf, Jura'
     kanton_list = kanton_list.split(', ')
     final_ads=[]
+    form={'zip':None,
+    'price_min': None,
+    'price_max': None,
+    'searching_for': None,
+    'kanton':'Ganze-Schweiz'}
+
 
     if request.method == 'POST':
 
-        form=check_form(session, request)
+        form = check_form(form, session, request)
         logging.info('Search arameters were: '+ str(form))
 
         select = request.form.get('Los')
@@ -29,13 +35,6 @@ def index():
                 final_ads=scrape_tutti.main(form['zip'], kanton=form['kanton'], price_min=form['price_min'],
                                         price_max=form['price_max'], searching_for=form['searching_for'], in_app=True)
 
-                return render_template('index.html',
-                                       final_ads=final_ads,
-                                       kanton_list=kanton_list,
-                                       zip=form['zip'],
-                                       price_min=form['price_min'],
-                                       price_max=form['price_max'],
-                                       )
 
             except:
                 logging.error("Fatal error in main loop", exc_info=True)
@@ -45,18 +44,16 @@ def index():
         kanton_list.insert(0, form['kanton'])
 
     return render_template('index.html',
-                           final_ads = final_ads,
+                           final_ads=final_ads,
                            kanton_list=kanton_list,
+                           zip=form['zip'],
+                           price_min=form['price_min'],
+                           price_max=form['price_max'],
                            )
 
 
-def check_form(session, request):
+def check_form(form, session, request):
 
-    form={'zip':None,
-    'price_min': None,
-    'price_max': None,
-    'searching_for': None,
-    'kanton':'Ganze-Schweiz'}
 
     if 'kanton' in session:
         form['kanton'] = session['kanton']
