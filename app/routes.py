@@ -1,6 +1,11 @@
 from app import app
 from app import scrape_tutti
 from flask import render_template, url_for, request, redirect, flash, session
+import logging
+
+logging.basicConfig(filename='tutti.log', level=logging.INFO)
+logging.getLogger().setLevel(logging.INFO)
+logging.info('Starting')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -15,26 +20,33 @@ def index():
 
 
     if request.method == 'POST':
-        form=check_form(session)
 
-
+        form=check_form(session, request)
+        print(form)
 
         select = request.form.get('Los')
         if select is not None:
-            final_ads=scrape_tutti.main(zip, kanton=form['kanton'], price_min=form['price_min'],
+            try:
+                final_ads=scrape_tutti.main(form['zip'], kanton=form['kanton'], price_min=form['price_min'],
                                         price_max=form['price_max'], searching_for=form['searching_for'], in_app=True)
 
+            except:
+                logging.error("Fatal error in main loop", exc_info=True)
 
+        #Shuffle kantons in the list so it will show the chosen kanton
         kanton_list.remove(form['kanton'])
         kanton_list.insert(0, form['kanton'])
 
     return render_template('index.html',
                            final_ads = final_ads,
                            kanton_list=kanton_list,
+                           zip=form['zip'],
+                           price_min=form['price_min'],
+                           price_max = form['price_max'],
                            )
 
 
-def check_form(session):
+def check_form(session, request):
 
     form={'zip':None,
     'price_min': None,

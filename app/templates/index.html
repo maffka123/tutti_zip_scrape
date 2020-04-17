@@ -24,18 +24,18 @@
 <form method="post" enctype=multipart/form-data class="w3-container w3-cell"> <!----All other settings-->
 <div class="w3-container">
     <div class="w3-container w3-cell"> <!-----zip---->
-            <input class="w3-input w3-border" type="text" placeholder="postleitzahl" id="zip" name="zip">
+            <input class="w3-input w3-border" type="text" placeholder="postleitzahl" id="zip" name="zip" value="{{ zip }}">
     </div>
 
     <div class="w3-container w3-cell"> <!-----price_min---->
 
-                <input class="w3-input w3-border" type="text" placeholder="Min Price" id="price_min" name="price_min">
+                <input class="w3-input w3-border" type="text" placeholder="Min Price" id="price_min" name="price_min" value="{{ price_min }}">
 
     </div>
 
     <div class="w3-container w3-cell"> <!-----price_max---->
 
-                <input class="w3-input w3-border" type="text" placeholder="Max Price" id="price_max" name="price_max">
+                <input class="w3-input w3-border" type="text" placeholder="Max Price" id="price_max" name="price_max" value="{{ price_max }}>
 
     </div>
 

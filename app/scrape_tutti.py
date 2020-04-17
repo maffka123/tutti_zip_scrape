@@ -21,6 +21,10 @@ from selenium import webdriver
 #option.add_argument(' — incognito')
 #driver = webdriver.Chrome(chrome_options=option)
 
+logging.basicConfig(filename='tutti.log', level=logging.INFO)
+logging.getLogger().setLevel(logging.INFO)
+logging.info('Starting')
+
 
 def main(zip,kanton=None,price_min=None, price_max=None,searching_for=None, in_app=False):
     '''
@@ -33,9 +37,6 @@ def main(zip,kanton=None,price_min=None, price_max=None,searching_for=None, in_a
     :return: print the list of fitting adds
     '''
 
-    logging.basicConfig(filename='tutti.log', level=logging.INFO)
-    logging.getLogger().setLevel(logging.INFO)
-    logging.info('Starting')
 
     ##--------Creating search link
     link_base='https://www.tutti.ch/de/li/'
