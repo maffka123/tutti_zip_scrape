@@ -4,5 +4,4 @@ requests
 tqdm
 tabulate
 flask
-app
 selenium
