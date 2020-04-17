@@ -23,6 +23,7 @@ pip install -r requirements.txt
 * Make script executable and run it
 
 ```bash
+cd app
 chmod +x ./scrape_tutti.py #this is maybe not nesessary
 python scrape_tutti.py --zip=your_zip --city=your_city --price_min=min_price --price_max=max_price --searching_for=what_do_you_want
 ```
@@ -45,6 +46,14 @@ python scrape_tutti.py --zip=80. --city=zuerich  --price_max=3 --searching_for=t
 
 Will save .csv file and print the table:
 
+### 3. Flask app serving
+
+```bash
+export FLASK_APP=scrape_tutti_inro.py 
+flask run
+```
+
+Unfortunately does not show images, because they are renderred by Java and selenium does not work for me. Waiting when bugs will be fixed.
 
 ### 2. How does it work
 
