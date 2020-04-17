@@ -17,6 +17,7 @@ def index():
         Ticino, Vaud, Liechtenstein, Wallis, Neuenburg, Genf, Jura'
     kanton_list = kanton_list.split(', ')
     final_ads=[]
+    form={}
 
 
     if request.method == 'POST':
